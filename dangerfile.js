@@ -1,4 +1,17 @@
-const {danger, warn} = require('danger')
+const {danger, fail, warn} = require('danger')
+
+// Verifica se a branch de origem segue o padrão esperado
+// Verifica se a branch de origem segue o padrão esperado
+const branchName = danger.github.pr.head.ref; // Nome da branch de origem
+const validBranchPatterns = [/^feature\//, /^hotfix\//]; // Padrões válidos
+
+const isValidBranch = validBranchPatterns.some((pattern) => pattern.test(branchName));
+
+if (!isValidBranch) {
+  fail(`A branch \`${branchName}\` não segue os padrões esperados. Use os prefixos \`feature/\` ou \`hotfix/\`.`);
+} else {
+  message(`A branch \`${branchName}\` segue o padrão esperado. 👍`);
+}
 
 // No PR is too small to include a description of why you made a change
 if (danger.github.pr.body.length < 10) {
