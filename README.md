@@ -1,3 +1,5 @@
+[![portfolio](https://img.shields.io/badge/Entenda_os_Testes_-_Clique_Aqui-fd6201?style=for-the-badge&logo=ko-fi&logoColor=white)]()
+
 # Tutorial Básico: Como Iniciar com Danger.js Localmente
 
 Este guia ensina como configurar o ambiente local para usar o [Danger.js](https://danger.systems/js/) em projetos GitHub. Abaixo estão os passos básicos de instalação e organização.
