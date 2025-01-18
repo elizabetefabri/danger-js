@@ -1,5 +1,10 @@
 const {danger, fail, warn} = require('danger')
 
+// Certifique-se de que o PR não está direcionado para `main`
+if (danger.github.pr.base.ref === 'main') {
+  fail('Pull Requests não podem ser direcionados para a branch `main`. Use `development` como destino.');
+}
+
 // Verifica se a branch de origem segue o padrão esperado
 // Verifica se a branch de origem segue o padrão esperado
 const branchName = danger.github.pr.head.ref; // Nome da branch de origem
