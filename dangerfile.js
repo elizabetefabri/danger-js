@@ -6,7 +6,6 @@ if (danger.github.pr.base.ref === 'main') {
 }
 
 // Verifica se a branch de origem segue o padrão esperado
-// Verifica se a branch de origem segue o padrão esperado
 const branchName = danger.github.pr.head.ref; // Nome da branch de origem
 const validBranchPatterns = [/^feature\//, /^hotfix\//]; // Padrões válidos
 
