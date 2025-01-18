@@ -28,5 +28,15 @@
         </a>
       </td>
     </tr>
+    <tr>
+      <td>03</td>
+      <td><img width="30px" height="30px" align="center" alt="icon check" src="./check.png"></td>
+      <td>Validação de Nome da Branch.</td>
+      <td align="center">
+        <a href="https://github.com/elizabetefabri/danger-js/tree/main/docs-pr/PR-3" target="_blank">
+           <img align="center" alt="Botao" src="https://img.shields.io/badge/Ver%20documentação-fd6201?style=for-the-badge" width="250px">
+        </a>
+      </td>
+    </tr>
   </tbody>
 </table>
