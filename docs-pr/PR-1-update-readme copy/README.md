@@ -1,4 +1,4 @@
-# Documentação do PR-1: Atualização no README
+# Documentação do PR-3: Atualização no README
 
 ## Descrição
 Este PR adiciona uma validação com o Danger.js para garantir que todos os Pull Requests possuam uma descrição com pelo menos 10 caracteres. Caso contrário, é emitido um aEste Pull Request adiciona e configura o Danger.js para realizar validações automatizadas durante o processo de revisão de código no repositório.
@@ -21,11 +21,7 @@ message('Iniciando a validação do Pull Request...');
 // Outras validações...
 message('Todas as validações foram concluídas com sucesso!');
 ```
-### Please include a description of your PR changes.
-![alt text](image-1.png)
-### Descrição inserida.
+### Imagens das mensagens inseridas
 ![alt text](image.png)
-### Regra passou com sucesso!
-![alt text](image-2.png)
 #### Links Úteis
-npx danger pr https://github.com/elizabetefabri/danger-js/pull/1
+npx danger pr https://github.com/elizabetefabri/danger-js/pull/3
