@@ -1,5 +1,5 @@
 const {danger, fail, warn} = require('danger');
-const { runTerraformValidations } = require('./src/rules/dangerRules');
+import { runTerraformValidations } from './src/rules/dangerRules.js';
 
 // Certifique-se de que o PR não está direcionado para `main`
 if (danger.github.pr.base.ref === 'main') {
