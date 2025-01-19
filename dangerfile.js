@@ -28,3 +28,11 @@ if (danger.github.pr.body.length < 10) {
 message('✅ Iniciando a validação do Pull Request...');
 // Outras validações...
 message('✅ Todas as validações foram concluídas com sucesso!');
+
+// Obtém arquivos modificados
+const terraformFiles = danger.git.modified_files.filter((file) => file.endsWith('.tf'));
+
+if (terraformFiles.length > 0) {
+    message('Iniciando validações de Terraform...');
+    runTerraformValidations(terraformFiles);
+}
