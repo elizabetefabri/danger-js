@@ -1,4 +1,4 @@
-const {danger, fail, warn, message} = require('danger');
+
 const { runTerraformValidations } = require('./src/rules/dangerRules');
 
 
