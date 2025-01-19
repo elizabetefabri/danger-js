@@ -1,4 +1,4 @@
-const {danger, fail, warn} = require('danger');
+const {danger, fail, warn, message} = require('danger');
 import { runTerraformValidations } from './src/rules/dangerRules.js';
 
 // Certifique-se de que o PR não está direcionado para `main`
