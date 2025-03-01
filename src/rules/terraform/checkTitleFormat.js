@@ -1,11 +1,20 @@
+const fs = require("node:fs");
+
 function validate(danger) {
-    const prTitle = danger.github.pr.title;
-    console.log(`🔍 Validando título do PR: "${prTitle}"`);
+    const terraformFile = "src/main.tf"; // Caminho do arquivo a validar
 
-    const titleRegex = /^(feature|bugfix|hotfix)\/[A-Z]+-\d+ .+$/;
+    if (!fs.existsSync(terraformFile)) {
+        warn("⚠️ O arquivo `main.tf` não foi encontrado no PR.");
+        return;
+    }
 
-    if (!titleRegex.test(prTitle)) {
-        fail("🚨 O título do PR deve seguir o formato correto: `feature/ABC-123 Descrição do PR`.");
+    const content = fs.readFileSync(terraformFile, "utf-8");
+
+    // ✅ Checa se o arquivo contém a tag 'Name' no bloco 'tags'
+    if (!content.match(/tags\s*=\s*{[^}]*Name\s*=/)) {
+        fail("🚨 O arquivo `main.tf` deve conter um título no campo `tags = { Name = \"...\" }`.");
+    } else {
+        message("✅ O arquivo `main.tf` contém um título adequado.");
     }
 }
 
