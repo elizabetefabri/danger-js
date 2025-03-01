@@ -1,11 +1,11 @@
 const { message, warn } = require("danger");
 
 function checkTerraformFiles(danger) {
-    console.log("✅ checkTerraformFiles.js foi chamado!");
+    console.log("checkTerraformFiles.js foi chamado!");
 
     const modifiedFiles = danger.git.modified_files;
 
-    // ✅ Verifica se arquivos Terraform foram alterados
+    // Verifica se arquivos Terraform foram alterados
     const terraformFiles = modifiedFiles.filter(file => file.endsWith(".tf"));
 
     if (terraformFiles.length === 0) {
@@ -17,5 +17,5 @@ function checkTerraformFiles(danger) {
     }
 }
 
-// ✅ Exporta a função para que o `dangerfile.js` possa utilizá-la
+// Exporta a função para que o `dangerfile.js` possa utilizá-la
 module.exports = { checkTerraformFiles };

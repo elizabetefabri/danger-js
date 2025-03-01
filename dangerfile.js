@@ -2,7 +2,7 @@ const { fail, warn, message, danger } = require("danger");
 const fs = require("node:fs");
 const path = require("node:path");
 
-// ✅ Verificação de branch
+// Verificação de branch
 const branchName = danger.github.pr.head.ref;
 const validBranchPatterns = [/^feature\//, /^hotfix\//];
 
@@ -14,12 +14,12 @@ if (!isValidBranch) {
   message(`📖 A branch \`${branchName}\` segue o padrão esperado. 👍`);
 }
 
-// ✅ Verifica se a descrição do PR tem pelo menos 10 caracteres
+// Verifica se a descrição do PR tem pelo menos 10 caracteres
 if (danger.github.pr.body.length < 10) {
   warn("⚠️ Por favor, adicione uma descrição ao PR com pelo menos 10 caracteres.");
 }
 
-// ✅ Caminho da pasta onde estão as regras
+// Caminho da pasta onde estão as regras
 const rulesPath = path.join(__dirname, "src", "rules", "terraform");
 
 try {
