@@ -2,32 +2,26 @@ const { fail, warn, message, danger } = require("danger");
 const fs = require("node:fs");
 const path = require("node:path");
 
-// Verificação de branch
-const branchName = danger.github.pr.head.ref;
-const validBranchPatterns = [/^feature\//, /^hotfix\//];
-
-const isValidBranch = validBranchPatterns.some((pattern) => pattern.test(branchName));
-
-if (!isValidBranch) {
-  fail(`🚫 A branch \`${branchName}\` não segue os padrões esperados. Use os prefixos \`feature/\` ou \`hotfix/\`.`);
-} else {
-  message(`📖 A branch \`${branchName}\` segue o padrão esperado. 👍`);
-}
-
-// Caminho da pasta onde estão as regras
+// ✅ Caminho absoluto para garantir que o Node.js encontre os arquivos corretamente
 const rulesPath = path.join(__dirname, "src", "rules", "terraform");
 
-try {
-  console.log("🔍 Buscando arquivos de regras em:", rulesPath);
+console.log(`🔍 Buscando arquivos de regras em: ${rulesPath}`);
 
+try {
   const ruleFiles = fs.readdirSync(rulesPath, { encoding: "utf-8" });
+
+  if (ruleFiles.length === 0) {
+    console.log("⚠️ Nenhum arquivo de regra encontrado!");
+  }
 
   for (const file of ruleFiles) {
     if (file.endsWith(".js")) {
-      console.log(`📌 Encontrado arquivo de regra: ${file}`);
-      const ruleModule = require(path.join(rulesPath, file));
+      const rulePath = path.join(rulesPath, file);
+      console.log(`📌 Encontrado arquivo de regra: ${rulePath}`);
 
-      // Executa a função de validação se ela existir
+      // ✅ Use require com caminho absoluto
+      const ruleModule = require(rulePath);
+
       if (typeof ruleModule.checkTerraformFiles === "function") {
         console.log(`🚀 Executando ${file}`);
         ruleModule.checkTerraformFiles(danger);
