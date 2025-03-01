@@ -2,7 +2,7 @@ const { fail, warn, message, danger } = require("danger");
 const fs = require("node:fs");
 const path = require("node:path");
 
-// ✅ Use diretamente as funções do Danger.js
+// ✅ Funções padrões do Danger.js
 fail("Teste de falha!");
 warn("Teste de aviso!");
 message("Tudo certo por aqui!");
@@ -33,13 +33,15 @@ try {
   for (const file of ruleFiles) {
     if (file.endsWith(".js")) {
       const ruleModule = require(path.join(rulesPath, file));
-      if (typeof ruleModule.validate === "function") {
-        ruleModule.validate(danger);
+
+      // Executa a função de validação se ela existir
+      if (typeof ruleModule.checkTerraformFiles === "function") {
+        ruleModule.checkTerraformFiles(danger);
       }
     }
   }
 } catch (error) {
-  console.error("Erro ao ler a pasta de regras:", error);
+  console.error("Erro ao carregar regras de Terraform:", error);
 }
 
 message("Iniciando a validação do Pull Request...");
