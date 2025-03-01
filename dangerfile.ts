@@ -1,5 +1,6 @@
 /// <reference types="danger" />
-import { danger, fail, warn, message } from "danger";
+import pkg from 'danger';
+const { danger, fail, warn, message } = pkg;
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
