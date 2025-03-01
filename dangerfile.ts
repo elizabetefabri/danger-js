@@ -1,4 +1,6 @@
-import { danger, fail, warn, message } from "danger";
+import dangerDefault from "danger";
+const { danger, fail, warn, message } = dangerDefault;
+
 import * as fs from "node:fs";
 import * as path from "node:path";
 
