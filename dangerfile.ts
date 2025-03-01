@@ -1,12 +1,14 @@
+/// <reference types="danger" />
+import { danger, fail, warn, message } from "danger";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// ✅ Converter import.meta.url para um diretório válido
+// Corrigir __dirname para ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ✅ Use diretamente as funções do Danger.js, sem importar
+// ✅ Agora o TypeScript reconhece `fail`, `warn`, `message` e `danger`
 fail("Teste de falha!");
 warn("Teste de aviso!");
 message("Tudo certo por aqui!");
@@ -34,7 +36,7 @@ if (danger.github.pr.body.length < 10) {
 const rulesPath = path.join(__dirname, "src", "rules", "terraform");
 
 try {
-  const ruleFiles: string[] = fs.readdirSync(rulesPath, { encoding: "utf-8" });
+  const ruleFiles = fs.readdirSync(rulesPath, { encoding: "utf-8" });
 
   for (const file of ruleFiles) {
     if (file.endsWith(".ts")) {
