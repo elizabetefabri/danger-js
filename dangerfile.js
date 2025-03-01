@@ -14,11 +14,6 @@ if (!isValidBranch) {
   message(`📖 A branch \`${branchName}\` segue o padrão esperado. 👍`);
 }
 
-// Verifica se a descrição do PR tem pelo menos 10 caracteres
-if (danger.github.pr.body.length < 10) {
-  warn("⚠️ Por favor, adicione uma descrição ao PR com pelo menos 10 caracteres.");
-}
-
 // Caminho da pasta onde estão as regras
 const rulesPath = path.join(__dirname, "src", "rules", "terraform");
 

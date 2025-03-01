@@ -1,7 +1,7 @@
 const { message, warn } = require("danger");
 
 function checkTerraformFiles(danger) {
-    console.log("checkTerraformFiles.js foi chamado!");
+    console.log("Teste: checkTerraformFiles.js, foi chamado!");
 
     const modifiedFiles = danger.git.modified_files;
 
