@@ -1,7 +1,9 @@
 import { fileURLToPath } from "node:url";
 import * as path from "node:path";
 import * as fs from "node:fs";
-import { fail, danger, warn } from "danger";
+
+import pkg from 'danger';
+const { fail, danger, warn } = pkg;
 
 // Ajuste para ESM
 const __filename = fileURLToPath(import.meta.url);
