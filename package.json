@@ -1,15 +1,18 @@
 {
   "name": "danger-js-tutorial",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node dangerfile.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "danger": "^12.3.3"
+    "@types/node": "^22.13.8",
+    "danger": "^12.3.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^4.9.5"
   }
 }

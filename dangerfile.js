@@ -1,9 +1,15 @@
-const {danger, fail, warn} = require('danger')
+const { fail, warn, message, danger } = require("danger");
+const fs = require("node:fs");
+const path = require("node:path");
 
-// Verifica se a branch de origem segue o padrão esperado
-// Verifica se a branch de origem segue o padrão esperado
-const branchName = danger.github.pr.head.ref; // Nome da branch de origem
-const validBranchPatterns = [/^feature\//, /^hotfix\//]; // Padrões válidos
+// ✅ Funções padrões do Danger.js
+fail("Teste de falha!");
+warn("Teste de aviso!");
+message("Tudo certo por aqui!");
+
+// ✅ Verifica se a branch segue os padrões esperados
+const branchName = danger.github.pr.head.ref;
+const validBranchPatterns = [/^feature\//, /^hotfix\//];
 
 const isValidBranch = validBranchPatterns.some((pattern) => pattern.test(branchName));
 
@@ -13,11 +19,30 @@ if (!isValidBranch) {
   message(`A branch \`${branchName}\` segue o padrão esperado. 👍`);
 }
 
-// No PR is too small to include a description of why you made a change
+// ✅ Verifica se a descrição do PR tem pelo menos 10 caracteres
 if (danger.github.pr.body.length < 10) {
-  warn('Por favor, adicione uma descrição ao PR com pelo menos 10 caracteres.');
+  warn("Por favor, adicione uma descrição ao PR com pelo menos 10 caracteres.");
 }
-// Adiciona mensagens no painel
-message('Iniciando a validação do Pull Request...');
-// Outras validações...
-message('Todas as validações foram concluídas com sucesso!');
+
+// ✅ Caminho da pasta onde estão as regras
+const rulesPath = path.join(__dirname, "src", "rules", "terraform");
+
+try {
+  const ruleFiles = fs.readdirSync(rulesPath, { encoding: "utf-8" });
+
+  for (const file of ruleFiles) {
+    if (file.endsWith(".js")) {
+      const ruleModule = require(path.join(rulesPath, file));
+
+      // Executa a função de validação se ela existir
+      if (typeof ruleModule.checkTerraformFiles === "function") {
+        ruleModule.checkTerraformFiles(danger);
+      }
+    }
+  }
+} catch (error) {
+  console.error("Erro ao carregar regras de Terraform:", error);
+}
+
+message("Iniciando a validação do Pull Request...");
+message("Todas as validações foram concluídas com sucesso!");
