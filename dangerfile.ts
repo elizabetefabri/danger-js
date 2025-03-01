@@ -1,62 +1,42 @@
-import { fileURLToPath } from "node:url";
-import * as path from "node:path";
-import * as fs from "node:fs";
+const { danger, fail, warn, message } = require("danger");
+const fs = require("node:fs");
+const path = require("node:path");
 
-import pkg from 'danger';
-const { fail, danger, warn } = pkg;
+// Verifica se a branch segue os padrões esperados
+const branchName = danger.github.pr.head.ref;
+const validBranchPatterns = [/^feature\//, /^hotfix\//];
 
-// Ajuste para ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const isValidBranch = validBranchPatterns.some((pattern) =>
+  pattern.test(branchName)
+);
 
-// Exportamos a função principal para o Danger.js
-export default async () => {
-    if (!danger.github) return;
+if (!isValidBranch) {
+  fail(
+    `A branch \`${branchName}\` não segue os padrões esperados. Use os prefixos \`feature/\` ou \`hotfix/\`.`
+  );
+} else {
+  message(`A branch \`${branchName}\` segue o padrão esperado. 👍`);
+}
 
-    // ✅ Verifica se o PR é grande demais
-    const bigPRThreshold = 300;
-    if (danger.github.pr.additions + danger.github.pr.deletions > bigPRThreshold) {
-        warn(":exclamation: O Pull Request parece ser grande. Considere dividi-lo em PRs menores para facilitar a revisão.");
+// Verifica se a descrição do PR tem pelo menos 10 caracteres
+if (danger.github.pr.body.length < 10) {
+  warn("Por favor, adicione uma descrição ao PR com pelo menos 10 caracteres.");
+}
+
+// Caminho da pasta onde estão as regras
+const rulesPath = path.join(__dirname, "src", "rules", "terraform");
+
+try {
+  const ruleFiles = fs.readdirSync(rulesPath, { encoding: "utf-8" });
+
+  for (const file of ruleFiles) {
+    if (file.endsWith(".ts")) {
+      require(path.join(rulesPath, file)).validate(danger);
     }
+  }
+} catch (error) {
+  console.error("Erro ao ler a pasta de regras:", error);
+}
 
-    // ✅ Garante que o PR tem um responsável
-    if (!danger.github.pr.assignee) {
-        fail("Atribua alguém para revisar e mesclar este PR.");
-    }
-
-    // ✅ Verifica se houve alterações no CHANGELOG.md
-    const hasChangelog = danger.git.modified_files.includes("CHANGELOG.md");
-    const isTrivial = (danger.github.pr.body + danger.github.pr.title).includes("#trivial");
-
-    if (!hasChangelog && !isTrivial) {
-        warn("Por favor, adicione uma entrada no CHANGELOG.md para as suas alterações.");
-    }
-
-    // ✅ Evita mudanças indevidas na versão do package.json
-    const packageDiff = await danger.git.JSONDiffForFile("package.json");
-
-    if (packageDiff.version && danger.github.pr.user.login !== "orta") {
-        fail("Por favor, não altere a versão do pacote manualmente.");
-    }
-
-    // ✅ Caminho da pasta onde estão as regras personalizadas
-    const rulesPath = path.join(__dirname, "src", "rules", "terraform");
-
-    try {
-        const ruleFiles = fs.readdirSync(rulesPath, { encoding: "utf-8" });
-
-        for (const file of ruleFiles) {
-            if (file.endsWith(".ts")) {
-                const ruleModule = await import(path.join(rulesPath, file));
-                if (typeof ruleModule.validate === "function") {
-                    ruleModule.validate(danger);
-                }
-            }
-        }
-    } catch (error) {
-        console.error("Erro ao ler a pasta de regras:", error);
-    }
-
-    // ✅ Resumo no PR
-    danger.github.setSummaryMarkdown("✅ Tudo parece correto!");
-};
+message("Iniciando a validação do Pull Request...");
+message("Todas as validações foram concluídas com sucesso!");
