@@ -3,7 +3,7 @@ name: Danger Validation
 on:
   pull_request:
     branches:
-      - main
+      - develop
 
 jobs:
   validate:
@@ -21,10 +21,10 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Install ts-node
+      - name: Install ts-node e configurar ESM
         run: npm install -g ts-node
 
-      - name: Run Danger.js
+      - name: Run Danger.js no modo ESM
         env:
           DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
-        run: npx danger ci --dangerfile=dangerfile.ts
+        run: npx danger ci --dangerfile=dangerfile.js

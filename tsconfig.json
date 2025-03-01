@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "target": "ESNext",
+      "strict": false,
+      "types": ["node", "danger"]
+    }
+  }
+  
