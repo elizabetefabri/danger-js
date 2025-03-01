@@ -3,7 +3,7 @@ name: Danger Validation
 on:
   pull_request:
     branches:
-      - main
+      - develop
 
 jobs:
   validate:
