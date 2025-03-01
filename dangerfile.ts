@@ -1,16 +1,21 @@
-import dangerDefault from "danger";
-const { danger, fail, warn, message } = dangerDefault;
-
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { fileURLToPath } from "node:url";
 
-// Verifica se a branch segue os padrões esperados
-const branchName: string = danger.github.pr.head.ref;
-const validBranchPatterns: RegExp[] = [/^feature\//, /^hotfix\//];
+// ✅ Converter import.meta.url para um diretório válido
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const isValidBranch: boolean = validBranchPatterns.some((pattern) =>
-  pattern.test(branchName)
-);
+// ✅ Use diretamente as funções do Danger.js, sem importar
+fail("Teste de falha!");
+warn("Teste de aviso!");
+message("Tudo certo por aqui!");
+
+// ✅ Verifica se a branch segue os padrões esperados
+const branchName = danger.github.pr.head.ref;
+const validBranchPatterns = [/^feature\//, /^hotfix\//];
+
+const isValidBranch = validBranchPatterns.some((pattern) => pattern.test(branchName));
 
 if (!isValidBranch) {
   fail(
@@ -20,12 +25,12 @@ if (!isValidBranch) {
   message(`A branch \`${branchName}\` segue o padrão esperado. 👍`);
 }
 
-// Verifica se a descrição do PR tem pelo menos 10 caracteres
+// ✅ Verifica se a descrição do PR tem pelo menos 10 caracteres
 if (danger.github.pr.body.length < 10) {
   warn("Por favor, adicione uma descrição ao PR com pelo menos 10 caracteres.");
 }
 
-// Caminho da pasta onde estão as regras
+// ✅ Caminho da pasta onde estão as regras
 const rulesPath = path.join(__dirname, "src", "rules", "terraform");
 
 try {
